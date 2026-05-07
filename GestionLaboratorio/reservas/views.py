@@ -91,7 +91,7 @@ class login_view(LoginView):
 
 class logout_view(LogoutView):
 
-    template_name = 'logout.html'
+   next_page = 'login'
 
 
 

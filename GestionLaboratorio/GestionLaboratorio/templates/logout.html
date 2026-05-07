@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-5">
+
+        <div class="card-custom text-center">
+
+            <h2 class="fw-bold mb-3">
+                Sesión cerrada
+            </h2>
+
+            <a href="{% url 'login' %}" class="btn btn-primary-custom">
+                Volver al login
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

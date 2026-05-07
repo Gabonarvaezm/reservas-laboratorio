@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card-custom">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="fw-bold">
+            Lista de Reservas
+        </h2>
+
+        <div>
+
+            <a href="{% url 'crear' %}" class="btn btn-primary-custom">
+                Nueva Reserva
+            </a>
+
+            <a href="{% url 'csv' %}" class="btn btn-success ms-2">
+                Exportar CSV
+            </a>
+
+        </div>
+
+    </div>
+
+    <form method="GET" class="row g-3 mb-4">
+
+        <div class="col-md-4">
+
+            <input
+                type="date"
+                name="fecha"
+                class="form-control"
+            >
+
+        </div>
+
+        <div class="col-md-4">
+
+            <input
+                type="text"
+                name="laboratorio"
+                class="form-control"
+                placeholder="Buscar laboratorio"
+            >
+
+        </div>
+
+        <div class="col-md-4">
+
+            <button type="submit" class="btn btn-dark w-100">
+                Filtrar
+            </button>
+
+        </div>
+
+    </form>
+
+    <div class="table-responsive">
+
+        <table class="table table-hover align-middle">
+
+            <thead>
+
+                <tr>
+
+                    <th>Usuario</th>
+                    <th>Laboratorio</th>
+                    <th>Fecha</th>
+                    <th>Hora Inicio</th>
+                    <th>Hora Fin</th>
+                    <th>Estado</th>
+                    <th>Motivo</th>
+                    <th>Acciones</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for reserva in reservas %}
+
+                <tr>
+
+                    <td>{{ reserva.usuario.username }}</td>
+
+                    <td>{{ reserva.laboratorio }}</td>
+
+                    <td>{{ reserva.fecha }}</td>
+
+                    <td>{{ reserva.hora_inicio }}</td>
+
+                    <td>{{ reserva.hora_fin }}</td>
+
+                    <td>
+
+                        {% if reserva.estado == 'pendiente' %}
+                        <span class="badge-pendiente">
+                            Pendiente
+                        </span>
+                        {% endif %}
+
+                        {% if reserva.estado == 'aprobada' %}
+                        <span class="badge-aprobada">
+                            Aprobada
+                        </span>
+                        {% endif %}
+
+                        {% if reserva.estado == 'rechazada' %}
+                        <span class="badge-rechazada">
+                            Rechazada
+                        </span>
+                        {% endif %}
+
+                    </td>
+
+                    <td>{{ reserva.motivo }}</td>
+
+                    <td>
+
+                        {% if reserva.estado == 'pendiente' %}
+
+                        <a href="{% url 'editar' reserva.id %}" class="btn btn-warning btn-sm">
+                            Editar
+                        </a>
+
+                        <a href="{% url 'eliminar' reserva.id %}" class="btn btn-danger btn-sm">
+                            Eliminar
+                        </a>
+
+                        {% endif %}
+
+                        {% if user.groups.all.0.name == 'Administradores' %}
+
+                        <form action="{% url 'aprobar' reserva.id %}" method="POST" style="display:inline;">
+
+                            {% csrf_token %}
+
+                            <button type="submit" class="btn btn-success btn-sm">
+                                Aprobar
+                            </button>
+
+                        </form>
+
+                        <form action="{% url 'rechazar' reserva.id %}" method="POST" style="display:inline;">
+
+                            {% csrf_token %}
+
+                            <button type="submit" class="btn btn-secondary btn-sm">
+                                Rechazar
+                            </button>
+
+                        </form>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="8" class="text-center">
+                        No hay reservas registradas.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

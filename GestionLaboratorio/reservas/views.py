@@ -1,7 +1,6 @@
 from django.contrib.auth.views import LoginView, LogoutView
 
 from django.views.generic import (
-    TemplateView,
     CreateView,
     ListView,
     UpdateView,
@@ -12,8 +11,6 @@ from django.contrib.auth.mixins import (
     LoginRequiredMixin,
     UserPassesTestMixin
 )
-
-from django.contrib.auth.forms import UserCreationForm
 
 from django.urls import reverse_lazy
 
@@ -30,14 +27,18 @@ import csv
 
 from .models import Reserva
 
-
+from .forms import (
+    RegistroDocenteForm,
+    RegistroAdministradorForm,
+    ReservaForm
+)
 
 
 class registro_docente(CreateView):
 
     model = User
 
-    form_class = UserCreationForm
+    form_class = RegistroDocenteForm
 
     template_name = 'registro_docente.html'
 
@@ -57,12 +58,11 @@ class registro_docente(CreateView):
 
 
 
-
 class registro_administrador(CreateView):
 
     model = User
 
-    form_class = UserCreationForm
+    form_class = RegistroAdministradorForm
 
     template_name = 'registro_administrador.html'
 
@@ -88,10 +88,9 @@ class login_view(LoginView):
 
 
 
-
 class logout_view(LogoutView):
 
-   next_page = 'login'
+    next_page = 'login'
 
 
 
@@ -139,13 +138,7 @@ class ReservaCreateView(
 
     model = Reserva
 
-    fields = [
-        'laboratorio',
-        'fecha',
-        'hora_inicio',
-        'hora_fin',
-        'motivo'
-    ]
+    form_class = ReservaForm
 
     template_name = 'reservas/form.html'
 
@@ -159,7 +152,6 @@ class ReservaCreateView(
 
 
 
-
 class ReservaUpdateView(
     LoginRequiredMixin,
     UserPassesTestMixin,
@@ -168,13 +160,7 @@ class ReservaUpdateView(
 
     model = Reserva
 
-    fields = [
-        'laboratorio',
-        'fecha',
-        'hora_inicio',
-        'hora_fin',
-        'motivo'
-    ]
+    form_class = ReservaForm
 
     template_name = 'reservas/form.html'
 
@@ -241,7 +227,6 @@ class AprobarReservaView(
         reserva.save()
 
         return redirect('lista')
-
 
 
 

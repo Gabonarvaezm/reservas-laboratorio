@@ -1,5 +1,7 @@
 from django.db import models
+
 from django.contrib.auth.models import User
+
 from django.core.exceptions import ValidationError
 
 
@@ -39,6 +41,14 @@ class Reserva(models.Model):
     )
 
     def clean(self):
+
+        if (
+            not self.laboratorio
+            or not self.fecha
+            or not self.hora_inicio
+            or not self.hora_fin
+        ):
+            return
 
         conflicto = Reserva.objects.filter(
             laboratorio=self.laboratorio,

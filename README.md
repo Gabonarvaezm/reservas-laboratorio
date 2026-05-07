@@ -6,11 +6,11 @@ Proyecto desarrollado con Django para gestionar reservas de laboratorios académ
 
 # Integrantes
 
-* Desarrollador 1
-* Desarrollador 2
-* Desarrollador 3
-* Desarrollador 4
-* Desarrollador 5
+* gabriel narvaez
+* juan patiño
+* andres chacua
+* valeria gongora
+* vanessa mena
 
 ---
 
